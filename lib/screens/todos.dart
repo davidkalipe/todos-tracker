@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_tracker/widgets/new_todo.dart';
+import 'package:todo_tracker/widgets/todo_list.dart';
+
+import '../models/todo.dart';
 
 class Todos extends StatefulWidget {
   const Todos({super.key});
@@ -8,11 +12,80 @@ class Todos extends StatefulWidget {
 }
 
 class _TodosState extends State<Todos> {
+  final List<Todo> _registeredTodos = [
+    Todo(
+        title: "Ménage",
+        description: "Faire le ménage dans ma chambre",
+        category: Category.other,
+        done: false,
+        finishedDate: DateTime.now()),
+    Todo(
+        title: "Bosser",
+        description: "Passer des cours en ligne",
+        category: Category.work,
+        done: false,
+        finishedDate: DateTime.now()),
+  ];
+
+  void _removeTodo(Todo todo) {
+    final todoIndex = _registeredTodos.indexOf(todo);
+
+    setState(() {
+      _registeredTodos.remove(todo);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text("Todo ${todo.title} removed"),
+      action: SnackBarAction(
+        label: "Undo",
+        onPressed: () {
+          setState(() {
+            _registeredTodos.insert(todoIndex, todo);
+          });
+        },
+      ),
+    ));
+  }
+
+  _addTodo(Todo todo){
+    setState(() {
+      _registeredTodos.add(todo);
+    });
+  }
+
+  _openAddTodoOverlay(){
+    showModalBottomSheet(
+        context: context,
+        builder: (ctx) => NewTodo(onAddTodo: _addTodo,));
+}
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-          child: Text("Hello world"),
+    Widget mainContent = const Center(
+      child: Text("No todos found"),
+    );
+
+    if (_registeredTodos.isNotEmpty) {
+      mainContent =
+          TodosList(todos: _registeredTodos, onRemovedTodo: _removeTodo);
+    }
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.brown,
+        title: const Text("Todos tracker"),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: mainContent,
+          ),
+        ],
       ),
     );
   }
