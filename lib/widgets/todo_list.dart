@@ -16,6 +16,9 @@ class TodosList extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         itemCount: todos.length,
         itemBuilder: (ctx, index) => Dismissible(
+          background: Container(
+            color: Colors.redAccent,
+          ),
             key: ValueKey(todos[index]),
             onDismissed: (direction) => onRemovedTodo(todos[index]),
             child: TodoItem(

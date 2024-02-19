@@ -48,17 +48,21 @@ class _TodosState extends State<Todos> {
     ));
   }
 
-  _addTodo(Todo todo){
+  _addTodo(Todo todo) {
     setState(() {
       _registeredTodos.add(todo);
     });
   }
 
-  _openAddTodoOverlay(){
+  _openAddTodoOverlay() {
     showModalBottomSheet(
-        context: context,
-        builder: (ctx) => NewTodo(onAddTodo: _addTodo,));
-}
+      context: context,
+      builder: (ctx) => NewTodo(
+        onAddTodo: _addTodo,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget mainContent = const Center(
@@ -75,7 +79,7 @@ class _TodosState extends State<Todos> {
         title: const Text("Todos tracker"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddTodoOverlay,
             icon: const Icon(Icons.add),
           ),
         ],
@@ -87,6 +91,7 @@ class _TodosState extends State<Todos> {
           ),
         ],
       ),
+      backgroundColor: const Color.fromARGB(200, 216, 223, 194),
     );
   }
 }

@@ -12,10 +12,11 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       shadowColor: Colors.black87,
       margin: const EdgeInsets.all(10),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
+        margin: const EdgeInsets.only(bottom: 10),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
           child: Column(
@@ -41,7 +42,7 @@ class TodoItem extends StatelessWidget {
                 children: [
                   Text(
                     todo.description,
-                    style: GoogleFonts.lato(fontSize: 18),
+                    style: GoogleFonts.lato(fontSize: 16),
                   ),
                   const Spacer(),
                   Row(
@@ -49,7 +50,11 @@ class TodoItem extends StatelessWidget {
                       Icon(
                         categoryIcons[todo.category],
                       ),
-                      const SizedBox(width: 15),
+                      const SizedBox(width: 10),
+                      Checkbox(
+                          checkColor: Colors.brown,
+                          value: todo.done,
+                          onChanged: null)
                     ],
                   )
                 ],
